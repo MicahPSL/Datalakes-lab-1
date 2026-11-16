@@ -41,10 +41,13 @@ class CSVProducer:
         """
         database = pd.read_csv(self.csv_path)
 
-        for x in database:
+        for x in database.iterrows():
+            print("RRODUCER:")
             print(x)
-            self.q.push(x)
-            time.sleep(1)
+            self.q.put(x)
+            print("\n")
+            time.sleep(self.delay)
+        self.q.put(None) #so the consumer wont get stuck in the end
 
 
 
@@ -58,4 +61,7 @@ if __name__ == "__main__":
     Expected behavior:
     - It should print rows from the CSV file every 'delay' seconds.
     """
+    q = Queue()
+    producer = CSVProducer("transactions.csv", q, 1)
+    producer.start()
    

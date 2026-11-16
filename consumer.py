@@ -34,11 +34,17 @@ class Consumer:
         - Print the event received.
         - Pass it to the process() function.
         """
-        while q.not_empty:
-            a = q.get()
-            print(a)
-            self.process(a)
-    
+        while True:
+        
+            a = self.q.get()
+
+            if a is None:
+                print("Consumer finished!")
+                break
+
+            print("CONSUMER:", a)
+            self.process(a[1].amount)
+            print("\n")
 
     def process(self, event):
         """
@@ -48,8 +54,10 @@ class Consumer:
         - Implement optional filtering conditions.
         - Update any state (example: running total).
         """
-        time.sleep(1.5)
+        time.sleep(0.01)
+        
         self.amount+=event
+        print("Total:", self.amount)
 
    
 
@@ -61,6 +69,6 @@ if __name__ == "__main__":
 
     Note: It will block waiting for messages since no producer is running.
     """
-    q = Queue()
-    consumer = Consumer(q)
-    consumer.start()
+    # q = Queue()
+    # consumer = Consumer(q)
+    # consumer.start()
