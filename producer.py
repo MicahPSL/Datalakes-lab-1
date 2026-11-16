@@ -10,6 +10,7 @@ import csv
 import time
 import random
 from queue import Queue
+import pandas as pd
 
 class CSVProducer:
     def __init__(self, csv_path, q, delay=1.0):
@@ -21,6 +22,10 @@ class CSVProducer:
 
        TODO : Implement the __init__ method to initialize the producer.
        """
+        self.q = q
+        self.csv_path = csv_path
+        self.delay = delay
+
     def start(self):
         """
         This method should:
@@ -34,7 +39,14 @@ class CSVProducer:
         - Implement the streaming behavior.
         - Optional: Add random jitter to simulate irregular network delays.
         """
-      
+        database = pd.read_csv(self.csv_path)
+
+        for x in database:
+            print(x)
+            self.q.push(x)
+            time.sleep(1)
+
+
 
 
 # Debugging test
